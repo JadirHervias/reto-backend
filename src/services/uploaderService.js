@@ -1,5 +1,6 @@
-import { google } from 'googleapis';
 import fs from 'fs';
+import stream from 'stream';
+import { google } from 'googleapis';
 import GoogleClientFactory from '../services/GoogleClientFactory.js';
 
 /**
@@ -9,7 +10,10 @@ import GoogleClientFactory from '../services/GoogleClientFactory.js';
  * @param {string} path storage path of the file.
  * @returns {GaxiosResponse<drive_v3.Schema$File>}
  */
-export const createGoogleDriveSlide = async (originalName, mimeType, path) => {
+export const createGoogleDriveSlide = async (originalName, mimeType, path, buffer) => {
+  const bufferStream = new stream.PassThrough();
+  bufferStream.end(buffer);
+
   const drive = google.drive('v3');
   const fileMetaData = {
     name: originalName,
@@ -17,12 +21,11 @@ export const createGoogleDriveSlide = async (originalName, mimeType, path) => {
   };
 
   const media = {
-    // TODO: validate just 2 types like schemas
     // application/vnd.ms-powerpoint
     // application/vnd.openxmlformats-officedocument.presentationml.presentation
     mimeType,
-    // body: req.file.buffer
-    body: fs.createReadStream(path)
+    body: bufferStream
+    // body: fs.createReadStream(path)
   };
 
   const uploadedFile = await drive.files.create({

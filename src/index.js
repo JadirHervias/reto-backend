@@ -6,6 +6,8 @@ import cors from 'cors';
 import errorHandler from 'errorhandler';
 import config from './config/index.js';
 import { registerRoutes } from './routes/index.js';
+import { logErrors, wrapErrors } from './utils/middlewares/errorHandler';
+import notFoundHandler from './utils/middlewares/notFoundHandler';
 
 const app = express();
 app.use(helmet());
@@ -30,6 +32,13 @@ app.options('*', cors());
 const router = express.Router();
 app.use('/api/v1', router);
 registerRoutes(router);
+
+// Catch 404
+app.use(notFoundHandler);
+
+// Errors middleware
+app.use(logErrors);
+app.use(wrapErrors);
 
 if (config.dev) {
   app.use(errorHandler());

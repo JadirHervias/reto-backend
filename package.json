@@ -20,6 +20,7 @@
   "license": "MIT",
   "dependencies": {
     "@firebase/auth": "^0.14.9",
+    "@hapi/boom": "^9.1.0",
     "axios": "^0.20.0",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
@@ -29,9 +30,11 @@
     "express": "^4.17.1",
     "express-promise-router": "^4.0.1",
     "firebase": "^7.21.1",
+    "firebase-admin": "^9.2.0",
     "glob": "^7.1.6",
     "googleapis": "^39.2.0",
     "helmet": "^4.1.1",
+    "joi": "^17.2.1",
     "mime-types": "^2.1.27",
     "multer": "^1.4.2",
     "winston": "^3.3.3"
