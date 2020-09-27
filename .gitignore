@@ -1,6 +1,8 @@
 ### Google API credentials ###
 **/.google/credentials.json
 
+uploads/
+
 ### Firebase ###
 .idea
 **/.firebaserc

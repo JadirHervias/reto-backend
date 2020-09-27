@@ -1,5 +1,9 @@
-import { uploadPpt } from '../controllers/uploaderController.js';
+import multer from 'multer';
+import { uploadPptOrPptx } from '../controllers/uploaderController.js';
+// const upload = multer({ storage: multer.memoryStorage() });
+const upload = multer({ dest: 'uploads/' });
 
 export const register = router => {
-  router.get('/uploader', uploadPpt);
+  // TODO: jwt and schema middleware
+  router.post('/uploader', upload.single('slide'), uploadPptOrPptx);
 };
