@@ -1,10 +1,13 @@
+### Google API credentials ###
+**/.google/credentials.json
+
 ### Firebase ###
 .idea
 **/.firebaserc
 
 ### Firebase Patch ###
 .runtimeconfig.json
-.firebase/
+**/.firebase/firebase.json
 
 # Logs
 logs
