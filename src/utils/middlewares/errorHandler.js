@@ -15,7 +15,7 @@ export const logErrors = (err, req, res, next) => {
   next(err);
 };
 
-// Check boom erros
+// Check boom errors
 export const wrapErrors = (err, req, res, next) => {
   if (!err.isBoom) {
     next(boom.badImplementation(err));
@@ -31,6 +31,5 @@ export const errorHandler = (err, req, res, next) => {
     output: { statusCode, payload }
   } = err;
 
-  res.status(statusCode);
-  res.json(withErrorStack(payload, err.stack));
+  res.status(statusCode).json(withErrorStack(payload, err.stack));
 };

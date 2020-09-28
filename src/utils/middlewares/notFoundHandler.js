@@ -7,7 +7,8 @@ const notFoundHandler = (req, res) => {
     output: { statusCode, payload }
   } = boom.notFound();
 
-  res.status(statusCode).json(payload);
+  delete payload.statusCode;
+  res.status(statusCode).json({ ...payload, status: statusCode });
 };
 
 export default notFoundHandler;
