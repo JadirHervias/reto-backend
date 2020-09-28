@@ -3,8 +3,12 @@ import readline from 'readline';
 import { google } from 'googleapis';
 import GoogleClientFactory from './GoogleClientFactory';
 
+import credentials from '../config/.google/credentials.json';
+
 // If modifying these scopes, delete token.json.
 const SCOPES = [
+  'https://www.googleapis.com/auth/drive',
+  'https://www.googleapis.com/auth/drive.readonly',
   'https://www.googleapis.com/auth/drive.metadata.readonly',
   'https://www.googleapis.com/auth/drive.file',
   'https://www.googleapis.com/auth/userinfo.profile'
@@ -19,13 +23,24 @@ const TOKEN_PATH = 'token.json';
  * given callback function.
  */
 export const authorizeClient = () => {
-  const oAuth2Client = new GoogleClientFactory().getClient();
+  // const oAuth2Client = new GoogleClientFactory().getClient();
+
+  const { client_id, client_secret, redirect_uris } = credentials.web;
+  const oAuth2Client = new google.auth.OAuth2(client_id, client_secret, redirect_uris[0]);
+
+  // const drive = google.drive({
+  //   version: 'v3',
+  //   auth: oAuth2Client
+  // });
+
+  getAccessToken(oAuth2Client);
+
   // Check if we have previously stored a token.
-  fs.readFile(TOKEN_PATH, (err, token) => {
-    if (err) return getAccessToken(oAuth2Client);
-    oAuth2Client.setCredentials(JSON.parse(token));
-    // return oAuth2Client.getTokenInfo(token);
-  });
+  // fs.readFile(TOKEN_PATH, (err, token) => {
+  //   if (err) return getAccessToken(oAuth2Client);
+  //   oAuth2Client.setCredentials(JSON.parse(token));
+  //   // return oAuth2Client.getTokenInfo(token);
+  // });
 };
 
 /**
@@ -34,25 +49,28 @@ export const authorizeClient = () => {
  * @param {google.auth.OAuth2} oAuth2Client The OAuth2 client to get token for.
  */
 const getAccessToken = oAuth2Client => {
-  const authUrl = oAuth2Client.generateAuthUrl({
-    access_type: 'offline',
-    scope: SCOPES
-  });
-  console.log('Authorize this app by visiting this url:', authUrl);
-  const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-  });
+  // const authUrl = oAuth2Client.generateAuthUrl({
+  //   access_type: 'offline',
+  //   scope: SCOPES
+  // });
+
+  // console.log('Authorize this app by visiting this url:', authUrl);
+  // const rl = readline.createInterface({
+  //   input: process.stdin,
+  //   output: process.stdout
+  // });
   rl.question('Enter the code from that page here: ', code => {
     rl.close();
     oAuth2Client.getToken(code, (err, token) => {
       if (err) return console.error('Error retrieving access token', err);
       oAuth2Client.setCredentials(token);
+      console.log('TOKENNNNNNN');
+      console.log(token);
       // Store the token to disk for later program executions
-      fs.writeFile(TOKEN_PATH, JSON.stringify(token), err => {
-        if (err) return console.error(err);
-        console.log('Token stored to', TOKEN_PATH);
-      });
+      // fs.writeFile(TOKEN_PATH, JSON.stringify(token), err => {
+      //   if (err) return console.error(err);
+      //   console.log('Token stored to', TOKEN_PATH);
+      // });
     });
   });
 };

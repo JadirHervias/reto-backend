@@ -2,8 +2,7 @@ import multer from 'multer';
 import { uploadPptOrPptx } from '../controllers/uploaderController.js';
 import validationHandler from '../utils/middlewares/validationHanlder';
 import { fileSchema, uploadFileSchema } from '../utils/schemas/fileSchema';
-// const upload = multer({ storage: multer.memoryStorage() });
-// const upload = multer({ dest: 'uploads/' });
+
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: {

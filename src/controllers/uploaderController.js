@@ -7,11 +7,21 @@ import { createGoogleDriveSlide } from '../services/uploaderService';
  */
 const uploadPptOrPptx = async (req, res) => {
   try {
-    console.log(req);
+    // console.log(req);
 
-    const { originalname, mimetype, path, buffer } = req.file;
+    // const bearerToken = req.headers.authorization;
+    // const accessToken = bearerToken.split(' ')[1];
+    // console.log(accessToken);
 
-    const uploadFile = await createGoogleDriveSlide(originalname, mimetype, path, buffer);
+    const userCredentials = req.body;
+
+    // const verificationCode = req.body.code;
+
+    // console.log('verification code!!!!' + verificationCode);
+
+    const { originalname, mimetype, buffer } = req.file;
+
+    const uploadFile = await createGoogleDriveSlide(originalname, mimetype, userCredentials, buffer);
 
     res.status(201).json({
       data: {

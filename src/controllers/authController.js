@@ -27,6 +27,9 @@ const loginWithGoogle = (req, res, next) => {
  */
 const googleVerification = (req, res) => {
   const code = req.query.code;
+
+  console.log(code);
+
   if (code) {
     // get access token
     const oAuthClient2 = new GoogleClientFactory().getClient();
